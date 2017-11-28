@@ -17,7 +17,7 @@ import pl.almestinio.mailclient.ui.sendingMail.SendingMailFragment;
  * Created by mesti193 on 28.11.2017.
  */
 
-public class MailSender extends AsyncTask<String, Void, String> {
+public class MailSend extends AsyncTask<String, Void, String> {
 
     private Session session;
     private String mailLogin;
@@ -27,7 +27,7 @@ public class MailSender extends AsyncTask<String, Void, String> {
     private String textMessage;
     private Context context;
 
-    public MailSender(Session session, String mailLogin, String mailUser, String recipient, String subject, String textMessage, Context context){
+    public MailSend(Session session, String mailLogin, String mailUser, String recipient, String subject, String textMessage, Context context){
         this.session = session;
         this.mailLogin = mailLogin;
         this.mailUser = mailUser;
@@ -57,7 +57,6 @@ public class MailSender extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String aVoid) {
-        Log.i("message", "Sent");
         Toast.makeText(context, "Message sent", Toast.LENGTH_SHORT).show();
     }
 }

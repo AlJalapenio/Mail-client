@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import pl.almestinio.mailclient.ui.receivingMail.ReceivedMailFragment;
 import pl.almestinio.mailclient.ui.sendingMail.SendingMailFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getFragmentManager();
 
-        changeFragment(new SendingMailFragment(), SendingMailFragment.class.getName());
+//        changeFragment(new SendingMailFragment(), SendingMailFragment.class.getName());
+        changeFragment(new ReceivedMailFragment(), ReceivedMailFragment.class.getName());
 
     }
 
