@@ -1,8 +1,10 @@
 package pl.almestinio.mailclient.ui.infoMail;
 
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +33,12 @@ public class InfoMailFragment extends Fragment {
         textViewTextMessage = (TextView) view.findViewById(R.id.textViewTextMessage);
 
         textViewSubject.setText(bundle.getString("subject"));
-        textViewTextMessage.setText(bundle.getString("textMessage"));
+//        textViewTextMessage.setText(bundle.getString("textMessage"));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textViewTextMessage.setText(Html.fromHtml(bundle.getString("textMessage"), Html.FROM_HTML_MODE_COMPACT));
+        }else{
+            textViewTextMessage.setText(Html.fromHtml(bundle.getString("textMessage")));
+        }
 
 
         return view;

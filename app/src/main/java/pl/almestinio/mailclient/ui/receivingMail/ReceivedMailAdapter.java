@@ -1,12 +1,16 @@
 package pl.almestinio.mailclient.ui.receivingMail;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -38,7 +42,7 @@ public class ReceivedMailAdapter extends RecyclerView.Adapter<ReceivedMailAdapte
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mail, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mail2, parent, false);
         return new ViewHolder(view);
     }
 
@@ -46,12 +50,19 @@ public class ReceivedMailAdapter extends RecyclerView.Adapter<ReceivedMailAdapte
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Mails mails = mailsList.get(position);
 
+        holder.textViewMailSender.setText(mails.getSender());
         holder.textViewMailSubject.setText(mails.getSubject());
+//        holder.textViewMailShortMessage.setText(mails.getTextMessage());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            holder.textViewMailShortMessage.setText(Html.fromHtml(mails.getTextMessageHtml(), Html.FROM_HTML_MODE_COMPACT));
+        }else{
+            holder.textViewMailShortMessage.setText(Html.fromHtml(mails.getTextMessageHtml()));
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemMailClick.onClick(position, mails.getSubject().toString(), mails.getTextMessage().toString());
+                onItemMailClick.onClick(position, mails.getSubject().toString(), mails.getTextMessageHtml().toString());
             }
         });
     }
@@ -62,19 +73,22 @@ public class ReceivedMailAdapter extends RecyclerView.Adapter<ReceivedMailAdapte
     }
 
     public interface OnItemMailClick{
-        public void onClick(int pos, String subject, String content);
+        public void onClick(int pos, String subject, String textMessageHtml);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         ConstraintLayout constraintLayout;
+        TextView textViewMailSender;
         TextView textViewMailSubject;
+        TextView textViewMailShortMessage;
 
         public ViewHolder(View itemView) {
             super(itemView);
-//            ButterKnife.bind(this, itemView);
             constraintLayout = (ConstraintLayout) view.findViewById(R.id.item_mail);
+            textViewMailSender = view.findViewById(R.id.textViewMailSender);
             textViewMailSubject = view.findViewById(R.id.textViewMailSubject);
+            textViewMailShortMessage = view.findViewById(R.id.textViewMailShortMessage);
         }
     }
 

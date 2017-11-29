@@ -8,16 +8,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.almestinio.mailclient.R;
 import pl.almestinio.mailclient.model.Mails;
@@ -31,18 +28,14 @@ import pl.almestinio.mailclient.utils.MailReceive;
 
 public class ReceivedMailFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ReceivedMailAdapter.OnItemMailClick{
 
-    SwipeRefreshLayout mSwipeRefreshLayout;
     User user = new User();
+    private ReceivedMailAdapter adapter;
 
-
-
-    ReceivedMailAdapter adapter;
-    List<Mails> mailsList = new ArrayList<Mails>();
-
-
-    RecyclerView recyclerView;
-
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private RecyclerView recyclerView;
     private FragmentManager fragmentManager;
+
+    private List<Mails> mailsList = new ArrayList<Mails>();
 
     @Nullable
     @Override
@@ -57,11 +50,9 @@ public class ReceivedMailFragment extends Fragment implements SwipeRefreshLayout
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-
         receiveMails();
 
         setAdapterAndGetRecyclerView();
-
 
         return view;
     }
@@ -69,7 +60,6 @@ public class ReceivedMailFragment extends Fragment implements SwipeRefreshLayout
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mSwipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_container);
-
         mSwipeRefreshLayout.setOnRefreshListener(this);
         super.onViewCreated(view, savedInstanceState);
     }
@@ -85,14 +75,13 @@ public class ReceivedMailFragment extends Fragment implements SwipeRefreshLayout
         mailsList.clear();
 
         try{
-            MailReceive mailReceived = new MailReceive(user.getMailHost(), user.getMailLogin(), user.getMailPassword());
+            MailReceive mailReceived = new MailReceive(user.getUserHost(), user.getUserLogin(), user.getUserPassword());
             mailReceived.execute();
 
             for(Mails mails: mailReceived.get()){
-                mailsList.add(new Mails(mails.getSubject().toString(), mails.getTextMessage().toString()));
+                mailsList.add(new Mails(mails.getSender().toString(), mails.getSubject().toString(), mails.getTextMessageHtml().toString()));
             }
 
-            adapter.notifyItemRangeChanged(0, mailsList.size());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -108,16 +97,18 @@ public class ReceivedMailFragment extends Fragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void onClick(int pos, String subject, String textMessage) {
+    public void onClick(int pos, String subject, String textMessageHtml) {
 //        Toast.makeText(getActivity(), pos+" "+name, Toast.LENGTH_LONG).show();
-        changeFragment(new InfoMailFragment(), InfoMailFragment.class.getName(), subject, textMessage);
+//        changeFragment(new InfoMailFragment(), InfoMailFragment.class.getName(), subject, textMessage);
+        changeFragment(new InfoMailFragment(), InfoMailFragment.class.getName(), subject, textMessageHtml);
     }
 
-    public void changeFragment(Fragment fragment, String tag, String subject, String textMessage){
+    public void changeFragment(Fragment fragment, String tag, String subject, String textMessageHtml){
         try{
             Bundle args = new Bundle();
             args.putString("subject", subject.toString());
-            args.putString("textMessage", textMessage.toString());
+//            args.putString("textMessage", textMessage.toString());
+            args.putString("textMessage", textMessageHtml.toString());
             fragment.setArguments(args);
         }catch (Exception e){
             e.printStackTrace();
