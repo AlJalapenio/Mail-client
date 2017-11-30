@@ -5,6 +5,7 @@
 
     <string name="nav_inbox">All inboxes</string>
     <string name="nav_send">Send an email</string>
+    <string name="nav_settings">Settings</string>
 
     <string name="message_sent">Wyslano wiadmomsc</string>
     <string name="message_content">text/html; charset=utf-8</string>

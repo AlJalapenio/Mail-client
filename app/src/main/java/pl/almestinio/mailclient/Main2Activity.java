@@ -19,6 +19,7 @@ import com.facebook.stetho.Stetho;
 import pl.almestinio.mailclient.database.DatabaseHelper;
 import pl.almestinio.mailclient.ui.receivingMail.ReceivedAllMailsFragment;
 import pl.almestinio.mailclient.ui.sendingMail.SendingMailFragment;
+import pl.almestinio.mailclient.ui.settings.SettingsFragment;
 import pl.almestinio.mailclient.user.User;
 
 public class Main2Activity extends AppCompatActivity
@@ -79,6 +80,8 @@ public class Main2Activity extends AppCompatActivity
             changeFragment(new SendingMailFragment());
         } else if (id == R.id.nav_inbox) {
             changeFragment(new ReceivedAllMailsFragment());
+        } else if (id == R.id.nav_settings){
+            changeFragment(new SettingsFragment());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -74,7 +74,7 @@ public class ReceivedAllMailsAdapter extends RecyclerView.Adapter<ReceivedAllMai
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemMailClick.onClick(position, mails.getSubject().toString(), mails.getTextMessageHtml().toString());
+                onItemMailClick.onClick(position, mails.getSenderMail().toString(), mails.getSubject().toString(), mails.getTextMessageHtml().toString());
             }
         });
     }
@@ -85,7 +85,7 @@ public class ReceivedAllMailsAdapter extends RecyclerView.Adapter<ReceivedAllMai
     }
 
     public interface OnItemMailClick{
-        public void onClick(int pos, String subject, String textMessageHtml);
+        public void onClick(int pos, String senderMail, String subject, String textMessageHtml);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

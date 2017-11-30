@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -145,17 +147,16 @@ public class ReceivedAllMailsFragment extends Fragment implements SwipeRefreshLa
 
             for(Mails mails: mailReceived.get()){
                 try{
-                    mailsList.add(new Mails(mails.getSender().toString(), mails.getSubject().toString(), mails.getTextMessageHtml().toString()));
+                    mailsList.add(new Mails(mails.getSender().toString(), mails.getSenderMail().toString(), mails.getSubject().toString(), mails.getTextMessageHtml().toString()));
                 }catch (Exception e){
                 }
             }
             try{
-//                adapter.notifyDataSetChanged();
-                adapter.notifyItemRangeChanged(1, mailsList.size());
+                adapter.notifyItemRangeChanged(0, mailsList.size());
             }catch (Exception e){}
 
-//            System.out.println("SIZE XD: "+mailsList.size());
-//            adapter.notifyItemRangeChanged(1, mailsList.size());
+
+            Collections.reverse(mailsList);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -170,17 +171,17 @@ public class ReceivedAllMailsFragment extends Fragment implements SwipeRefreshLa
     }
 
     @Override
-    public void onClick(int pos, String subject, String textMessageHtml) {
+    public void onClick(int pos, String senderMail, String subject, String textMessageHtml) {
 //        Toast.makeText(getActivity(), pos+" "+name, Toast.LENGTH_LONG).show();
 //        changeFragment(new InfoMailFragment(), InfoMailFragment.class.getName(), subject, textMessage);
-        changeFragment(new InfoMailFragment(), InfoMailFragment.class.getName(), subject, textMessageHtml);
+        changeFragment(new InfoMailFragment(), InfoMailFragment.class.getName(), senderMail, subject, textMessageHtml);
     }
 
-    public void changeFragment(Fragment fragment, String tag, String subject, String textMessageHtml){
+    public void changeFragment(Fragment fragment, String tag, String senderMail, String subject, String textMessageHtml){
         try{
             Bundle args = new Bundle();
+            args.putString("sender", senderMail.toString());
             args.putString("subject", subject.toString());
-//            args.putString("textMessage", textMessage.toString());
             args.putString("textMessage", textMessageHtml.toString());
             fragment.setArguments(args);
         }catch (Exception e){

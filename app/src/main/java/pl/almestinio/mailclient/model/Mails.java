@@ -12,6 +12,7 @@ import javax.mail.BodyPart;
 public class Mails {
 
     private String sender;
+    private String senderMail;
     private String subject;
     private String content;
     private String textMessage;
@@ -22,8 +23,9 @@ public class Mails {
         this.textMessage = textMessage;
     }
 
-    public Mails(String sender, String subject, String textMessageHtml){
+    public Mails(String sender, String senderMail, String subject, String textMessageHtml){
         this.sender = sender;
+        this.senderMail = senderMail;
         this.subject = subject;
         this.textMessageHtml = textMessageHtml;
     }
@@ -34,6 +36,14 @@ public class Mails {
 
     public void setSender(String sender) {
         this.sender = sender;
+    }
+
+    public String getSenderMail() {
+        return senderMail;
+    }
+
+    public void setSenderMail(String senderMail) {
+        this.senderMail = senderMail;
     }
 
     public String getSubject() {

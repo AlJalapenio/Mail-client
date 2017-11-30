@@ -51,6 +51,7 @@ public class MailReceive extends AsyncTask<String, Void, List<Mails>>{
     User user = new User();
 
     String sender;
+    String senderMail;
     String textMessageHtml;
     @Override
     protected List<Mails> doInBackground(String... strings) {
@@ -80,8 +81,13 @@ public class MailReceive extends AsyncTask<String, Void, List<Mails>>{
 
                 for(Message message:messages) {
                     for (Address a: message.getFrom()){
+                        // WITH THESE TWO LINES IT'S SHOWS ONLY EMAIL, WITHOUT THAT IT'S SHOWS NAME AND EMAIL
+                        Address[] froms =  message.getFrom();
+                        String email = froms == null ? null : ((InternetAddress) froms[0]).getAddress();
+
                         System.out.println("From:" + a);
                         sender = a.toString();
+                        senderMail = email.toString();
                     }
 
                     System.out.println("Date: " + message.getReceivedDate());
@@ -108,11 +114,11 @@ public class MailReceive extends AsyncTask<String, Void, List<Mails>>{
                             System.out.println("BodyMessage "+ textMessageHtml);
 
                         }
-                        mailsList.add(new Mails(sender, message.getSubject(), textMessageHtml));
+                        mailsList.add(new Mails(sender, senderMail, message.getSubject(), textMessageHtml));
                     } else {
-                        String s = (String) msg;
-                        System.out.println("BodyMessage:" + s);
-                        mailsList.add(new Mails(sender, message.getSubject(), s));
+                        String textMessage = (String) msg;
+                        System.out.println("BodyMessage:" + textMessage);
+                        mailsList.add(new Mails(sender, senderMail, message.getSubject(), textMessage));
                     }
 
 

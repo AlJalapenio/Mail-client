@@ -25,6 +25,7 @@ import javax.mail.Session;
 
 import pl.almestinio.mailclient.R;
 import pl.almestinio.mailclient.ui.receivingMail.ReceivedAllMailsFragment;
+import pl.almestinio.mailclient.ui.sendingMail.SendingMailFragment;
 import pl.almestinio.mailclient.user.User;
 import pl.almestinio.mailclient.utils.MailDelete;
 import pl.almestinio.mailclient.utils.MailSend;
@@ -86,6 +87,15 @@ public class InfoMailFragment extends Fragment {
             }
         });
 
+        final MenuItem replyIcon = menu.findItem(R.id.action_reply);
+        replyIcon.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                changeFragment(new SendingMailFragment(), bundle.getString("sender"));
+                return false;
+            }
+        });
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -112,6 +122,18 @@ public class InfoMailFragment extends Fragment {
     }
 
     public void changeFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment);
+        fragmentTransaction.commit();
+    }
+    public void changeFragment(Fragment fragment, String sender){
+        try{
+            Bundle args = new Bundle();
+            args.putString("sender", sender.toString());
+            fragment.setArguments(args);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, fragment);
         fragmentTransaction.commit();

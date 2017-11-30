@@ -36,7 +36,7 @@ import pl.almestinio.mailclient.utils.MailSend;
 public class SendingMailFragment extends Fragment {
 
     User user = new User();
-
+    Bundle bundle;
     private Session session = null;
 
     private String recipient;
@@ -57,6 +57,8 @@ public class SendingMailFragment extends Fragment {
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
 
+        bundle = getArguments();
+
         try{
             List<MailRecipient> mailRecipient = DatabaseRecipient.getRecipient();
             for(int i=0; i< mailRecipient.size(); i++){
@@ -74,6 +76,14 @@ public class SendingMailFragment extends Fragment {
 
         autoCompleteTextViewRecipient.setAdapter(adapter);
         autoCompleteTextViewRecipient.setThreshold(1);
+
+        try{
+            if(!bundle.getString("sender").isEmpty()){
+                autoCompleteTextViewRecipient.setText(bundle.getString("sender"));
+            }
+        }catch (Exception e){
+
+        }
 
         return view;
     }
