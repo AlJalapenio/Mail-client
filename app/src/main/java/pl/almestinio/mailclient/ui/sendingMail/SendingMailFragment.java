@@ -114,7 +114,7 @@ public class SendingMailFragment extends Fragment {
         props.put("mail.smtp.socketFactory.port", user.getUserPort());
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 
-        session = Session.getDefaultInstance(props, new Authenticator() {
+        session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(user.getUserLogin(), user.getUserPassword());
@@ -123,7 +123,6 @@ public class SendingMailFragment extends Fragment {
 
         MailSend task = new MailSend(session, user.getUserLogin(), user.getUserName(), recipient, subject, textMessage, getActivity());
         task.execute();
-
 
         for(MailRecipient mailRecipient: mailRecipientList){
             if(mailRecipient.getRecipient().contains(recipient)){

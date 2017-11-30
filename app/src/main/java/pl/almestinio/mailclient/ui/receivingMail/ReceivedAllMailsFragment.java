@@ -8,7 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,10 +30,10 @@ import pl.almestinio.mailclient.utils.MailReceive;
  * Created by mesti193 on 28.11.2017.
  */
 
-public class ReceivedMailFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ReceivedMailAdapter.OnItemMailClick{
+public class ReceivedAllMailsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ReceivedAllMailsAdapter.OnItemMailClick, SearchView.OnQueryTextListener{
 
     User user = new User();
-    private ReceivedMailAdapter adapter;
+    private ReceivedAllMailsAdapter adapter;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView recyclerView;
@@ -65,10 +69,73 @@ public class ReceivedMailFragment extends Fragment implements SwipeRefreshLayout
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_receive, menu);
+
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+
+//        searchView.setOnSearchClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                MenuItem fragmentMap = menu.findItem(R.id.action_favourite);
+//                fragmentMap.setVisible(false);
+//            }
+//        });
+//
+//        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+//            @Override
+//            public boolean onClose() {
+//                MenuItem fragmentMap = menu.findItem(R.id.action_favourite);
+//                fragmentMap.setVisible(true);
+//                return false;
+//            }
+//        });
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public void onRefresh() {
         receiveMails();
         mSwipeRefreshLayout.setRefreshing(false);
     }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if( newText == null || newText.trim().isEmpty()){
+            resetSearch();
+            return false;
+        }
+
+        List<Mails> filteredValues = new ArrayList<>(mailsList);
+        for(Mails value : mailsList){
+//            String searchSender = value.getSender();
+            String searchSubject = value.getSubject();
+//            String searchTextMessage = value.getTextMessageHtml();
+            if((!searchSubject.toLowerCase().contains(newText.toLowerCase()))){
+                filteredValues.remove(value);
+            }
+        }
+
+        adapter = new ReceivedAllMailsAdapter(filteredValues, getActivity(), this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.invalidate();
+        return false;
+    }
+
+    public void resetSearch(){
+        adapter = new ReceivedAllMailsAdapter(mailsList, getActivity(), this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.invalidate();
+    }
+
+
 
     private void receiveMails(){
 
@@ -79,7 +146,12 @@ public class ReceivedMailFragment extends Fragment implements SwipeRefreshLayout
             mailReceived.execute();
 
             for(Mails mails: mailReceived.get()){
-                mailsList.add(new Mails(mails.getSender().toString(), mails.getSubject().toString(), mails.getTextMessageHtml().toString()));
+                try{
+                    mailsList.add(new Mails(mails.getSender().toString(), mails.getSubject().toString(), mails.getTextMessageHtml().toString()));
+                }catch (Exception e){
+
+                }
+
             }
 
         }catch (Exception e){
@@ -90,7 +162,7 @@ public class ReceivedMailFragment extends Fragment implements SwipeRefreshLayout
     }
 
     public void setAdapterAndGetRecyclerView(){
-        adapter = new ReceivedMailAdapter(mailsList, getActivity(), this);
+        adapter = new ReceivedAllMailsAdapter(mailsList, getActivity(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.invalidate();

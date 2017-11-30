@@ -89,22 +89,43 @@ public class MailReceive extends AsyncTask<String, Void, List<Mails>>{
                     System.out.println("Title: " + message.getSubject());
                     System.out.println();
 
-                    Multipart multipart = (Multipart) message.getContent();
 
-                    for (int j = 0; j < multipart.getCount(); j++) {
+                    Object msg = null;
+                    Multipart multipart = null;
 
-                        textMessageHtml = multipart.getBodyPart(j).getContent().toString();
-                        System.out.println("BodyMessage "+ textMessageHtml);
+                    try{
+                        msg = message.getContent();
+                        multipart = (Multipart) message.getContent();
+                    }catch (Exception e){
 
                     }
+
+
+                    if (message.getContent() instanceof Multipart) {
+                        for (int j = 0; j < multipart.getCount(); j++) {
+
+                            textMessageHtml = multipart.getBodyPart(j).getContent().toString();
+                            System.out.println("BodyMessage "+ textMessageHtml);
+
+                        }
+                        mailsList.add(new Mails(sender, message.getSubject(), textMessageHtml));
+                    } else {
+                        String s = (String) msg;
+                        System.out.println("BodyMessage:" + s);
+                        mailsList.add(new Mails(sender, message.getSubject(), s));
+                    }
+
+
 
 //                    String textMessage = getTextFromMessage(message);
 //                    System.out.println(textMessage);
 
-                    mailsList.add(new Mails(sender, message.getSubject(), textMessageHtml));
+
                     System.out.println("---");
 
                 }
+
+                store.close();
 
             } catch (Exception e) {
                 e.printStackTrace();

@@ -4,16 +4,10 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import pl.almestinio.mailclient.ui.receivingMail.ReceivedMailFragment;
-import pl.almestinio.mailclient.ui.sendingMail.SendingMailFragment;
+import pl.almestinio.mailclient.ui.receivingMail.ReceivedAllMailsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getFragmentManager();
 
 //        changeFragment(new SendingMailFragment(), SendingMailFragment.class.getName());
-        changeFragment(new ReceivedMailFragment(), ReceivedMailFragment.class.getName());
+        changeFragment(new ReceivedAllMailsFragment(), ReceivedAllMailsFragment.class.getName());
 
     }
 

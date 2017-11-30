@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.facebook.stetho.Stetho;
 
 import pl.almestinio.mailclient.database.DatabaseHelper;
-import pl.almestinio.mailclient.ui.receivingMail.ReceivedMailFragment;
+import pl.almestinio.mailclient.ui.receivingMail.ReceivedAllMailsFragment;
 import pl.almestinio.mailclient.ui.sendingMail.SendingMailFragment;
 import pl.almestinio.mailclient.user.User;
 
@@ -79,7 +79,7 @@ public class Main2Activity extends AppCompatActivity
         if (id == R.id.nav_send) {
             changeFragment(new SendingMailFragment());
         } else if (id == R.id.nav_inbox) {
-            changeFragment(new ReceivedMailFragment());
+            changeFragment(new ReceivedAllMailsFragment());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

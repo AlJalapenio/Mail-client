@@ -10,12 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import pl.almestinio.mailclient.R;
 import pl.almestinio.mailclient.model.Mails;
 
@@ -23,7 +19,7 @@ import pl.almestinio.mailclient.model.Mails;
  * Created by mesti193 on 28.11.2017.
  */
 
-public class ReceivedMailAdapter extends RecyclerView.Adapter<ReceivedMailAdapter.ViewHolder>{
+public class ReceivedAllMailsAdapter extends RecyclerView.Adapter<ReceivedAllMailsAdapter.ViewHolder>{
 
     List<Mails> mailsList;
     Context context;
@@ -31,7 +27,7 @@ public class ReceivedMailAdapter extends RecyclerView.Adapter<ReceivedMailAdapte
     View view;
     int lastPosition = -1;
 
-    public ReceivedMailAdapter(List<Mails> mailsList, Context context, OnItemMailClick onItemMailClick){
+    public ReceivedAllMailsAdapter(List<Mails> mailsList, Context context, OnItemMailClick onItemMailClick){
         this.mailsList = mailsList;
         if(mailsList.size() > 0){
             notifyItemRangeChanged(0, mailsList.size());
@@ -42,7 +38,7 @@ public class ReceivedMailAdapter extends RecyclerView.Adapter<ReceivedMailAdapte
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mail2, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mail, parent, false);
         return new ViewHolder(view);
     }
 
