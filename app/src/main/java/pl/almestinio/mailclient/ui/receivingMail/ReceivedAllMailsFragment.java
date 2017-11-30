@@ -135,8 +135,6 @@ public class ReceivedAllMailsFragment extends Fragment implements SwipeRefreshLa
         recyclerView.invalidate();
     }
 
-
-
     private void receiveMails(){
 
         mailsList.clear();
@@ -149,15 +147,18 @@ public class ReceivedAllMailsFragment extends Fragment implements SwipeRefreshLa
                 try{
                     mailsList.add(new Mails(mails.getSender().toString(), mails.getSubject().toString(), mails.getTextMessageHtml().toString()));
                 }catch (Exception e){
-
                 }
-
             }
+            try{
+//                adapter.notifyDataSetChanged();
+                adapter.notifyItemRangeChanged(1, mailsList.size());
+            }catch (Exception e){}
 
+//            System.out.println("SIZE XD: "+mailsList.size());
+//            adapter.notifyItemRangeChanged(1, mailsList.size());
         }catch (Exception e){
             e.printStackTrace();
         }
-
 
     }
 

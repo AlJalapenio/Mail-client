@@ -8,6 +8,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -55,6 +56,21 @@ public class ReceivedAllMailsAdapter extends RecyclerView.Adapter<ReceivedAllMai
             holder.textViewMailShortMessage.setText(Html.fromHtml(mails.getTextMessageHtml()));
         }
 
+        String firstLetter = String.valueOf(mails.getSender().charAt(0));
+        holder.textViewMailFirstLetter.setText(firstLetter.toUpperCase());
+
+        char firstLetterChar = firstLetter.charAt(0);
+
+        if((firstLetterChar >= 97 && firstLetterChar <= 106) || (firstLetterChar >= 65 && firstLetterChar <= 74)) {
+            holder.imageViewCircle.setBackground(context.getResources().getDrawable(R.drawable.ic_mail_circle_a));
+        }else if((firstLetterChar >= 107 && firstLetterChar <= 115) || (firstLetterChar >= 75 && firstLetterChar <= 83)) {
+            holder.imageViewCircle.setBackground(context.getResources().getDrawable(R.drawable.ic_mail_circle_k));
+        }else if((firstLetterChar >= 116 && firstLetterChar <= 122) || (firstLetterChar >= 84 && firstLetterChar <= 90)) {
+            holder.imageViewCircle.setBackground(context.getResources().getDrawable(R.drawable.ic_mail_circle_k));
+        }else{
+            holder.imageViewCircle.setBackground(context.getResources().getDrawable(R.drawable.ic_mail_circle));
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +94,8 @@ public class ReceivedAllMailsAdapter extends RecyclerView.Adapter<ReceivedAllMai
         TextView textViewMailSender;
         TextView textViewMailSubject;
         TextView textViewMailShortMessage;
+        TextView textViewMailFirstLetter;
+        ImageView imageViewCircle;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -85,6 +103,8 @@ public class ReceivedAllMailsAdapter extends RecyclerView.Adapter<ReceivedAllMai
             textViewMailSender = view.findViewById(R.id.textViewMailSender);
             textViewMailSubject = view.findViewById(R.id.textViewMailSubject);
             textViewMailShortMessage = view.findViewById(R.id.textViewMailShortMessage);
+            textViewMailFirstLetter = view.findViewById(R.id.textViewMailFirstLetter);
+            imageViewCircle = view.findViewById(R.id.imageViewCircle);
         }
     }
 

@@ -3,5 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorGrey">#888</color>
     <color name="colorWhite">#FFF</color>
+
+    <color name="colorMailFirstLetterA">#ff4646</color>
+    <color name="colorMailFirstLetterK">#5aff5a</color>
+    <color name="colorMailFirstLetterT">#4545ff</color>
 </resources>

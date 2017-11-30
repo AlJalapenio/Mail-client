@@ -41,7 +41,6 @@ public class Main2Activity extends AppCompatActivity
         DatabaseHelper.getInstance(this);
 //        DatabaseRecipient.deleteAllRecipients();
 
-
         fragmentManager = getFragmentManager();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
